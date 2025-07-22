@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  llm-matching-app:
+    build:
+      context: .             # Constrói a imagem a partir do Dockerfile no diretório atual (raiz do projeto)
+      dockerfile: Dockerfile # Especifica o Dockerfile a ser usado
+    container_name: llm_matching_app
+    ports:
+      - "8501:8501"          # Mapeia a porta do Streamlit
+    volumes:
+      # Monta o diretório do projeto local (incluindo app, data, src, etc.) no /app do contêiner.
+      - .:/app
+      # **AJUSTE AQUI**: Mapeia a pasta 'models' da raiz do seu projeto para '/app/models' no contêiner.
+      # O GPT4All, por padrão, geralmente procura em ~/.cache/gpt4all/models
+      # ou no 'model_path' que você especificar no construtor GPT4All.
+      # Mapeando './models' do host para '/app/models' no contêiner é a forma mais direta.
+      # - ./models:/app/models # Isso garante que os modelos baixados persistam no seu host.
+      # - ./app:/workspaces/match_nlp_app/app
+      # - ./data:/workspaces/match_nlp_app/data
+      # - ./models:/workspaces/match_nlp_app/models
+      - .:/workspaces/match_nlp_app
+    
+    restart: always
+
+    environment:
+      # Informa ao GPT4All que o diretório de modelos dentro do contêiner é /app/models
+      # GPT4ALL_MODEL_DIR: "/app/models"
+      GPT4ALL_MODEL_DIR: "/workspaces/match_nlp_app/models"
+    # (Opcional) Limite de recursos
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '3'
+    #       memory: '8G'

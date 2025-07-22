@@ -1,0 +1,16 @@
+# Dados e arquivos grandes
+*.parquet
+*.pkl
+*.db
+*.zip
+*.csv
+
+# Pasta de dados
+/data/
+/models/
+/checkpoints/
+
+# Ambiente e cache
+__pycache__/
+*.pyc
+.env

@@ -1,0 +1,13 @@
+streamlit
+pandas
+scikit-learn
+tqdm
+matplotlib
+umap-learn
+llama-cpp-python
+gpt4all
+jupyter
+sentence-transformers
+langchain
+faiss-cpu
+openpyxl
