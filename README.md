@@ -18,3 +18,4 @@ joguei o app para fora das pastas para facilitar o entendimento do streamlit e p
 - Rodar o streamlit que o projeto já estará funcional;
 
 # Link deployado do streamlit
+https://vinisouzam-datathonfiapfase5-main-yc28t9.streamlit.app/
