@@ -4,7 +4,8 @@ scikit-learn
 tqdm
 matplotlib
 umap-learn
-# gpt4all
+llama-cpp-python
+gpt4all
 jupyter
 sentence-transformers
 langchain

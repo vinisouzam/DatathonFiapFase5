@@ -5,8 +5,8 @@ from src.data_loader import load_processed_data
 from src.nlp_matcher import (
     load_all_embeddings,
     find_top_matches,
-    get_llm_explanation_for_match,
-    get_single_embedding
+    # get_llm_explanation_for_match,
+    # get_single_embedding
 )
 
 from src.utils.download_utils import download_file

@@ -30,7 +30,7 @@ COPY requirements.txt .
 # Instala as dependências Python
 # AJUSTE CHAVE AQUI: Adicionar -pthread ou -lpthread nos CMAKE_ARGS
 RUN CMAKE_ARGS="-DLLAMA_BLAS=ON -DLLAMA_BLAS_VENDOR=OpenBLAS -DCMAKE_CXX_FLAGS='-pthread'" \
-    pip install --upgrade --no-cache-dir -r requirements.txt
+    pip install --upgrade --no-cache-dir -r requirements-dev.txt
 
 # Copia o restante do código da sua aplicação (src/, data/, notebooks/, Streamlit app)
 COPY . .

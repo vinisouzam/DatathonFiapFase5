@@ -1,8 +1,17 @@
-from llama_cpp import Llama
+# from llama_cpp import Llama
 import os
 import streamlit as st
 
-MODEL_PATH = os.path.join("models", "mistral-7b-openorca.Q4_0.gguf")
+# USE_LOCAL_LLM = os.getenv("USE_LOCAL_LLM", "False") == "True"
+# removido porque não consigo levar para o streamlit
+# if USE_LOCAL_LLM:
+#     try:
+#         from llama_cpp import Llama
+#         # código local do modelo
+#     except ImportError:
+#         st.warning("Local LLM não disponível.")
+
+# MODEL_PATH = os.path.join("models", "mistral-7b-openorca.Q4_0.gguf")
 
 # Carregando o modelo para economizar processamento no momento de disponibilizar
 
@@ -40,34 +49,34 @@ def load_llm_model():
 
 
 # A instância do LLM será carregada e cacheada na primeira vez que o aplicativo rodar.
-llm = load_llm_model()
+# llm = load_llm_model()
 
 
-def ask_llm(prompt: str, max_tokens=200):
-    """
-    Faz uma pergunta ao LLM no formato de chat e retorna a resposta.
-    """
-    with st.spinner("O LLM está pensando... Por favor, aguarde."):
-        print(
-            f"DEBUG_LLM: Gerando resposta com chat_format (max_tokens={max_tokens}).")
-        try:
-            messages = [
-                {"role": "system", "content": "Você é um especialista em recrutamento que explica por que um candidato é compatível com uma vaga."},
-                {"role": "user", "content": prompt}
-            ]
-            output = llm.create_chat_completion(
-                messages=messages,
-                max_tokens=max_tokens,
-                temperature=0.7,
-            )
-            response_text = output["choices"][0]["message"]["content"].strip()
-            print(
-                f"DEBUG_LLM: Resposta do LLM gerada. (Primeiras 50 chars: {response_text[:50]})")
-            return response_text
-        except Exception as e:
-            print(f"DEBUG_LLM: ERRO durante a inferência do LLM: {e}")
-            st.error(f"Erro durante a inferência do LLM: {e}")
-            return "Não foi possível gerar uma resposta. Tente novamente."
+# def ask_llm(prompt: str, max_tokens=200):
+#     """
+#     Faz uma pergunta ao LLM no formato de chat e retorna a resposta.
+#     """
+#     with st.spinner("O LLM está pensando... Por favor, aguarde."):
+#         print(
+#             f"DEBUG_LLM: Gerando resposta com chat_format (max_tokens={max_tokens}).")
+#         try:
+#             messages = [
+#                 {"role": "system", "content": "Você é um especialista em recrutamento que explica por que um candidato é compatível com uma vaga."},
+#                 {"role": "user", "content": prompt}
+#             ]
+#             output = llm.create_chat_completion(
+#                 messages=messages,
+#                 max_tokens=max_tokens,
+#                 temperature=0.7,
+#             )
+#             response_text = output["choices"][0]["message"]["content"].strip()
+#             print(
+#                 f"DEBUG_LLM: Resposta do LLM gerada. (Primeiras 50 chars: {response_text[:50]})")
+#             return response_text
+#         except Exception as e:
+#             print(f"DEBUG_LLM: ERRO durante a inferência do LLM: {e}")
+#             st.error(f"Erro durante a inferência do LLM: {e}")
+#             return "Não foi possível gerar uma resposta. Tente novamente."
 
 
 # %%%%%%%%%%%%%%%%%%%

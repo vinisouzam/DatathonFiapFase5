@@ -10,8 +10,8 @@ import hashlib  # Adicionado para gerar chaves de cache únicas
 # Importa SentenceTransformer para embeddings de alta qualidade
 from sentence_transformers import SentenceTransformer
 
-# A instância LLM do chat_llm.py (usada para gerar explicações, não para embeddings aqui)
-from src.chat_llm import ask_llm
+# A instância LLM do chat_llm.py
+# from src.chat_llm import ask_llm
 
 # Pasta onde Parquets e embeddings são salvos
 PROCESSED_DATA_PATH = "data/processed_data"
@@ -85,37 +85,37 @@ def load_all_embeddings():
     return embeddings_data
 
 
-# --- Funções de Cache para Explicações do LLM ---
+# # --- Funções de Cache para Explicações do LLM ---
 
-def load_llm_explanations_cache():
-    """Carrega o dicionário de explicações do LLM de um arquivo pickle."""
-    if os.path.exists(LLM_EXPLANATIONS_CACHE_FILE):
-        try:
-            with open(LLM_EXPLANATIONS_CACHE_FILE, 'rb') as f:
-                cache = pickle.load(f)
-            print(
-                f"DEBUG_LLM_CACHE: Cache de explicações do LLM carregado de {LLM_EXPLANATIONS_CACHE_FILE}.")
-            return cache
-        except Exception as e:
-            print(
-                f"DEBUG_LLM_CACHE: Erro ao carregar cache de explicações do LLM: {e}. Iniciando cache vazio.")
-            return {}
-    print("DEBUG_LLM_CACHE: Cache de explicações do LLM não encontrado. Iniciando cache vazio.")
-    return {}
+# def load_llm_explanations_cache():
+#     """Carrega o dicionário de explicações do LLM de um arquivo pickle."""
+#     if os.path.exists(LLM_EXPLANATIONS_CACHE_FILE):
+#         try:
+#             with open(LLM_EXPLANATIONS_CACHE_FILE, 'rb') as f:
+#                 cache = pickle.load(f)
+#             print(
+#                 f"DEBUG_LLM_CACHE: Cache de explicações do LLM carregado de {LLM_EXPLANATIONS_CACHE_FILE}.")
+#             return cache
+#         except Exception as e:
+#             print(
+#                 f"DEBUG_LLM_CACHE: Erro ao carregar cache de explicações do LLM: {e}. Iniciando cache vazio.")
+#             return {}
+#     print("DEBUG_LLM_CACHE: Cache de explicações do LLM não encontrado. Iniciando cache vazio.")
+#     return {}
 
 
-def save_llm_explanations_cache(cache):
-    """Salva o dicionário de explicações do LLM em um arquivo pickle."""
-    try:
-        # Garante que o diretório exista
-        os.makedirs(PROCESSED_DATA_PATH, exist_ok=True)
-        with open(LLM_EXPLANATIONS_CACHE_FILE, 'wb') as f:
-            pickle.dump(cache, f)
-        print(
-            f"DEBUG_LLM_CACHE: Cache de explicações do LLM salvo em {LLM_EXPLANATIONS_CACHE_FILE}.")
-    except Exception as e:
-        print(
-            f"DEBUG_LLM_CACHE: Erro ao salvar cache de explicações do LLM: {e}.")
+# def save_llm_explanations_cache(cache):
+#     """Salva o dicionário de explicações do LLM em um arquivo pickle."""
+#     try:
+#         # Garante que o diretório exista
+#         os.makedirs(PROCESSED_DATA_PATH, exist_ok=True)
+#         with open(LLM_EXPLANATIONS_CACHE_FILE, 'wb') as f:
+#             pickle.dump(cache, f)
+#         print(
+#             f"DEBUG_LLM_CACHE: Cache de explicações do LLM salvo em {LLM_EXPLANATIONS_CACHE_FILE}.")
+#     except Exception as e:
+#         print(
+#             f"DEBUG_LLM_CACHE: Erro ao salvar cache de explicações do LLM: {e}.")
 
 
 # --- Funções de Matching ---
@@ -154,57 +154,57 @@ def find_top_matches(query_embedding: np.ndarray, target_embeddings_data: dict, 
 # --- Função de Explicação do LLM para o Match (AGORA COM CACHE) ---
 
 
-def get_llm_explanation_for_match(job_text: str, candidate_text: str, match_score: float) -> str:
-    """
-    Usa o LLM para explicar o motivo da seleção de um candidato/prospect para uma vaga.
-    Chama a função `ask_llm` do módulo `chat_llm.py` e gerencia um cache persistente.
-    """
-    # Criar uma chave única para o cache baseada nos inputs relevantes
-    # Usamos um hash SHA256 para garantir que a chave seja concisa e única
-    # Normalizamos o score para 2 casas decimais para consistência da chave
-    key_parts = (job_text, candidate_text, f"{match_score:.2f}")
-    cache_key = hashlib.sha256(str(key_parts).encode('utf-8')).hexdigest()
+# def get_llm_explanation_for_match(job_text: str, candidate_text: str, match_score: float) -> str:
+#     """
+#     Usa o LLM para explicar o motivo da seleção de um candidato/prospect para uma vaga.
+#     Chama a função `ask_llm` do módulo `chat_llm.py` e gerencia um cache persistente.
+#     """
+#     # Criar uma chave única para o cache baseada nos inputs relevantes
+#     # Usamos um hash SHA256 para garantir que a chave seja concisa e única
+#     # Normalizamos o score para 2 casas decimais para consistência da chave
+#     key_parts = (job_text, candidate_text, f"{match_score:.2f}")
+#     cache_key = hashlib.sha256(str(key_parts).encode('utf-8')).hexdigest()
 
-    # Carregar o cache (dentro da função por simplicidade, Streamlit cache faria melhor globalmente)
-    llm_explanations_cache = load_llm_explanations_cache()
+#     # Carregar o cache (dentro da função por simplicidade, Streamlit cache faria melhor globalmente)
+#     llm_explanations_cache = load_llm_explanations_cache()
 
-    if cache_key in llm_explanations_cache:
-        print(
-            f"DEBUG_LLM_CACHE: Explicação do LLM encontrada no cache para chave: {cache_key}")
-        return llm_explanations_cache[cache_key]
+#     if cache_key in llm_explanations_cache:
+#         print(
+#             f"DEBUG_LLM_CACHE: Explicação do LLM encontrada no cache para chave: {cache_key}")
+#         return llm_explanations_cache[cache_key]
 
-    # Se não estiver no cache, gerar a explicação com o LLM
-    prompt = f"""Explique em português de forma concisa (máximo 150 palavras) por que o perfil do candidato/prospect descrito abaixo pode ser um bom match para a vaga, considerando uma similaridade de {match_score:.2f} (onde 1.0 é um match perfeito). Foco nos pontos relevantes.
+#     # Se não estiver no cache, gerar a explicação com o LLM
+#     prompt = f"""Explique em português de forma concisa (máximo 150 palavras) por que o perfil do candidato/prospect descrito abaixo pode ser um bom match para a vaga, considerando uma similaridade de {match_score:.2f} (onde 1.0 é um match perfeito). Foco nos pontos relevantes.
 
-Vaga:
-{job_text[:1500]} # Limita o texto da vaga para não exceder o n_ctx do LLM
+# Vaga:
+# {job_text[:1500]} # Limita o texto da vaga para não exceder o n_ctx do LLM
 
-Perfil do Candidato/Prospect:
-{candidate_text[:1500]} # Limita o texto do perfil
+# Perfil do Candidato/Prospect:
+# {candidate_text[:1500]} # Limita o texto do perfil
 
-Explicação do Match:"""
+# Explicação do Match:"""
 
-    print(
-        f"DEBUG_LLM_EXPLAIN: Solicitando explicação do LLM (NÃO ESTÁ NO CACHE). Prompt inicial: {prompt[:200]}...")
-    # Usa a função `ask_llm` que já tem o spinner e tratamento de erros
-    explanation = ask_llm(prompt=prompt, max_tokens=200)
-    print(
-        f"DEBUG_LLM_EXPLAIN: Explicação do LLM gerada. (Primeiras 50 chars: {explanation[:50]})")
+#     print(
+#         f"DEBUG_LLM_EXPLAIN: Solicitando explicação do LLM (NÃO ESTÁ NO CACHE). Prompt inicial: {prompt[:200]}...")
+#     # Usa a função `ask_llm` que já tem o spinner e tratamento de erros
+#     explanation = ask_llm(prompt=prompt, max_tokens=200)
+#     print(
+#         f"DEBUG_LLM_EXPLAIN: Explicação do LLM gerada. (Primeiras 50 chars: {explanation[:50]})")
 
-    # Salvar no cache antes de retornar
-    llm_explanations_cache[cache_key] = explanation
-    save_llm_explanations_cache(llm_explanations_cache)
+#     # Salvar no cache antes de retornar
+#     llm_explanations_cache[cache_key] = explanation
+#     save_llm_explanations_cache(llm_explanations_cache)
 
-    return explanation
+#     return explanation
 
 # Função para gerar embedding de uma única string (para futuras consultas dinâmicas, por exemplo)
 
 
-def get_single_embedding(text: str) -> np.ndarray:
-    """Gera o embedding para uma única string de texto usando o modelo de inferência."""
-    if not isinstance(text, str):
-        text = str(text)  # Garante que o input é string
-    return embedding_model_inference.encode(text, convert_to_numpy=True)
+# def get_single_embedding(text: str) -> np.ndarray:
+#     """Gera o embedding para uma única string de texto usando o modelo de inferência."""
+#     if not isinstance(text, str):
+#         text = str(text)  # Garante que o input é string
+#     return embedding_model_inference.encode(text, convert_to_numpy=True)
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

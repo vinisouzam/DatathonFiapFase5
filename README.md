@@ -8,6 +8,8 @@ Deploy em streamlit para podermos analisar os resultados.
 
 - Caso os dados não estejam disponíveis na pasta, acessar ao link e realizar o download salvando em data
     link: https://drive.google.com/drive/folders/1f3jtTRyOK-PBvND3JTPTAxHpnSrH7rFR
+    Observação : Implementado o download automático do hugging face para usar o streamlit, nesse link teremos 
+    apenas os arquivos brutos.
 
 - Rodar primeiro o script de pré - processamento que esta na pasta scripts, podem demorar a depender da capacidade da máquina, no meu caso demorou 7 minutos para vagas, 25 minutos para candidatos e 8 minutos para prospects;
 
@@ -15,4 +17,3 @@ Deploy em streamlit para podermos analisar os resultados.
 - Rodar o streamlit que o projeto já estará funcional;
 
 # Link deployado do streamlit
-https://vinisouzam-datathonfiapfase5-appmain-wbszgr.streamlit.app
