@@ -1,29 +1,15 @@
 import numpy as np
 import streamlit as st
 import pandas as pd
-
-# adicionando para o streamlit
-import sys
-import os
-
-ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-SRC_PATH = os.path.join(ROOT_DIR, 'src')
-
-if SRC_PATH not in sys.path:
-    sys.path.append(SRC_PATH)
-
-try:
-    from src.utils.download_utils import download_file
-    from data_loader import load_processed_data
-    from src.data_loader import load_processed_data
-    from src.nlp_matcher import (
-        load_all_embeddings,
-        find_top_matches,
-        # get_llm_explanation_for_match,
-        # get_single_embedding
-    )
-except:
-    pass
+from src.utils.download_utils import download_file
+from src.data_loader import load_processed_data
+from src.data_loader import load_processed_data
+from src.nlp_matcher import (
+    load_all_embeddings,
+    find_top_matches,
+    # get_llm_explanation_for_match,
+    # get_single_embedding
+)
 
 # Arquivos necessários e seus caminhos remotos
 FILE_URLS = {

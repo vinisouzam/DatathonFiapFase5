@@ -13,6 +13,7 @@ Deploy em streamlit para podermos analisar os resultados.
 
 - Rodar primeiro o script de pré - processamento que esta na pasta scripts, podem demorar a depender da capacidade da máquina, no meu caso demorou 7 minutos para vagas, 25 minutos para candidatos e 8 minutos para prospects;
 
+joguei o app para fora das pastas para facilitar o entendimento do streamlit e permitir deploy
 
 - Rodar o streamlit que o projeto já estará funcional;
 
