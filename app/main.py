@@ -9,6 +9,42 @@ from src.nlp_matcher import (
     get_single_embedding
 )
 
+from src.utils.download_utils import download_file
+
+# Arquivos necessários e seus caminhos remotos
+FILE_URLS = {
+    "candid_embeddings": (
+        "https://huggingface.co/datasets/vinisouzam/datathon-fase5-dados/resolve/main/data/processed_data/candid_embeddings.pkl",
+        "data/processed_data/candid_embeddings.pkl"
+    ),
+    "prospect_embeddings": (
+        "https://huggingface.co/datasets/vinisouzam/datathon-fase5-dados/resolve/main/data/processed_data/prospect_embeddings.pkl",
+        "data/processed_data/prospect_embeddings.pkl"
+    ),
+    "vaga_embeddings": (
+        "https://huggingface.co/datasets/vinisouzam/datathon-fase5-dados/resolve/main/data/processed_data/vaga_embeddings.pkl",
+        "data/processed_data/vaga_embeddings.pkl"
+    ),
+    "applicants_parquet": (
+        "https://huggingface.co/datasets/vinisouzam/datathon-fase5-dados/resolve/main/data/processed_data/applicants.parquet",
+        "data/processed_data/applicants.parquet"
+    ),
+    "prospects_parquet": (
+        "https://huggingface.co/datasets/vinisouzam/datathon-fase5-dados/resolve/main/data/processed_data/prospects.parquet",
+        "data/processed_data/prospects.parquet"
+    ),
+    "vagas_parquet": (
+        "https://huggingface.co/datasets/vinisouzam/datathon-fase5-dados/resolve/main/data/processed_data/vagas.parquet",
+        "data/processed_data/vagas.parquet"
+    )
+}
+# Baixar os arquivos, se necessário
+for name, (url, path) in FILE_URLS.items():
+    try:
+        download_file(url, path)
+    except Exception as e:
+        st.error(f"Erro ao baixar {name}: {e}")
+
 st.set_page_config(layout='wide')
 
 st.set_page_config(page_title='Projeto Datathon')
