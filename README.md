@@ -13,3 +13,6 @@ Deploy em streamlit para podermos analisar os resultados.
 
 
 - Rodar o streamlit que o projeto já estará funcional;
+
+# Link deployado do streamlit
+https://vinisouzam-datathonfiapfase5-appmain-wbszgr.streamlit.app
