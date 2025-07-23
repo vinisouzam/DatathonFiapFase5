@@ -18,4 +18,8 @@ joguei o app para fora das pastas para facilitar o entendimento do streamlit e p
 - Rodar o streamlit que o projeto já estará funcional;
 
 # Link deployado do streamlit
-https://vinisouzam-datathonfiapfase5-main-yc28t9.streamlit.app/
+https://datathonfiapfase5-n4vr6redzwnoasgyyqzlxv.streamlit.app/
+
+## Devido limitaçao da ferramenta, ela funciona e depois quebra
+No docker ele funcionou bem, retirei o LLM porque não dá para subir no modelo e precisava ainda ajustar 
+todos os parametros, porque tenho um limite de memória no meu pc.

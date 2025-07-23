@@ -25,7 +25,7 @@ RUN apt-get update && \
 ENV PYTHONPATH="/workspaces/match_nlp_app:${PYTHONPATH}"
 
 # Copia o arquivo de dependências
-COPY requirements.txt .
+COPY requirements-dev.txt .
 
 # Instala as dependências Python
 # AJUSTE CHAVE AQUI: Adicionar -pthread ou -lpthread nos CMAKE_ARGS
